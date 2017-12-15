@@ -1,12 +1,11 @@
 package com.booxware.test.account.service;
 
+import com.booxware.test.account.domain.Account;
 import com.booxware.test.account.repository.PersistenceInMemoryRepository;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-
-import java.util.Date;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -19,6 +18,7 @@ public class AccountScenarioSteps {
     private String username;
     private String email;
     private String password;
+    private Account account;
 
     private AccountServiceInterface accountService;
 
@@ -34,11 +34,11 @@ public class AccountScenarioSteps {
     @When("the user is registered new account")
     public void register() {
         accountService = new AccountService(new PersistenceInMemoryRepository());
-        accountService.register(username, email, password);
+        account = accountService.register(username, email, password);
     }
 
     @Then("system returns true that user logged in since current date/time")
     public void checkMoney() {
-        assertThat(accountService.hasLoggedInSince(new Date(), username), is(true));
+        assertThat(accountService.hasLoggedInSince(account.getLastLogin(), username), is(true));
     }
 }
