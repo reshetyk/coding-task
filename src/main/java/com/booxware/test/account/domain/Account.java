@@ -23,10 +23,7 @@ public final class Account implements Serializable {
 
 	private final Date lastLogin;
 
-    public Account(Account a) {
-        this(a.getId().get(), a.getUsername(), a.getEncryptedPassword(), a.getSalt(), a.getEmail(), a.getLastLogin());
-    }
-
+    //TODO create builder
     public Account(Long id, String username, byte[] encryptedPassword, String salt, String email, Date lastLogin) {
         this.id = Optional.of(id);
         this.username = username;

@@ -34,26 +34,6 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.jbehave</groupId>
-                <artifactId>jbehave-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>run-stories</id>
-                        <phase>integration-test</phase>
-                        <configuration>
-                            <includes>
-                                <include>**/*Scenario.java</include>
-                            </includes>
-                            <scope>test</scope>
-                        </configuration>
-                        <goals>
-                            <goal>run-stories-as-embeddables</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -66,9 +46,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jbehave</groupId>
-            <artifactId>jbehave-core</artifactId>
-            <version>4.1.3</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
 
