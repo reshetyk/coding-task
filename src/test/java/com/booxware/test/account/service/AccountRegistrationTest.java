@@ -2,27 +2,15 @@ package com.booxware.test.account.service;
 
 import com.booxware.test.account.domain.Account;
 import com.booxware.test.account.exception.AccountServiceException;
-import com.booxware.test.account.repository.PersistenceInMemoryRepository;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.security.MessageDigest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-public class AccountRegistrationTest {
-
-    private AccountServiceInterface accountService;
-    private PersistenceInMemoryRepository repository;
-
-    @Before
-    public void setUp() throws Exception {
-        repository = new PersistenceInMemoryRepository();
-        accountService = new AccountService(repository, MessageDigest.getInstance("MD5"));
-    }
+public class AccountRegistrationTest extends AccountAbstractTest {
 
     @Test
     public void successfulRegistration() throws Exception {

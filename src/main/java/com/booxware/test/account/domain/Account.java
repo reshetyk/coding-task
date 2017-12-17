@@ -27,7 +27,7 @@ public final class Account implements Serializable {
     public Account(Long id, String username, byte[] encryptedPassword, String salt, String email, Date lastLogin) {
         this.id = Optional.of(id);
         this.username = username;
-        this.encryptedPassword = encryptedPassword;
+        this.encryptedPassword = encryptedPassword.clone();
         this.salt = salt;
         this.email = email;
         this.lastLogin = lastLogin;

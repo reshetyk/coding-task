@@ -21,11 +21,13 @@ public class AccountService implements AccountServiceInterface {
     @Override
     public Account login(String username, String password) {
         try {
-            Account a = findAccountBy(username);
-            if (Objects.deepEquals(a.getEncryptedPassword(), encryptPassword(password))) {
-                Account account = new Account(a.getId().get(), a.getUsername(), a.getEncryptedPassword(), a.getSalt(), a.getEmail(), new Date());
-                repository.save(account);
-                return account;
+            Account account = findAccountByUsername(username);
+            if (Objects.deepEquals(account.getEncryptedPassword(), encryptPassword(password))) {
+
+                return repository.save(new Account(
+                        account.getId().get(), account.getUsername(), account.getEncryptedPassword(),
+                        account.getSalt(), account.getEmail(), new Date()
+                ));
             }
         } catch (Exception ex) {
             throw new AccountServiceException("Error is occurred during login: " + ex.getMessage(), ex);
@@ -52,7 +54,7 @@ public class AccountService implements AccountServiceInterface {
     @Override
     public void deleteAccount(String username) {
         try {
-            repository.delete(findAccountBy(username));
+            repository.delete(findAccountByUsername(username));
         } catch (Exception ex) {
             throw new AccountServiceException("Error is occurred during account deleting: " + ex.getMessage(), ex);
         }
@@ -61,14 +63,15 @@ public class AccountService implements AccountServiceInterface {
     @Override
     public boolean hasLoggedInSince(Date date, String username) {
         try {
-            return Objects.equals(date, findAccountBy(username).getLastLogin());
+            Account account = findAccountByUsername(username);
+            return Objects.equals(date, account.getLastLogin());
         } catch (Exception ex) {
             throw new AccountServiceException("Error is occurred during checking has user logged in since ["
                     + date.toString() + "]:" + ex.getMessage(), ex);
         }
     }
 
-    private Account findAccountBy(String username) {
+    private Account findAccountByUsername(String username) {
         return repository.findByName(username).orElseThrow(() ->
                 new AccountServiceException("Not found user with name [" + username + "]"));
     }

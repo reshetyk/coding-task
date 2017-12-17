@@ -36,7 +36,7 @@ public class PersistenceInMemoryRepository implements PersistenceInterface {
 
     @Override
     public synchronized Optional<Account> findByName(String name) {
-        assertNotNull(name);
+        assertArgumentNotNull(name);
 
         List<Account> accounts = storage.values().stream()
                 .filter(account -> name.equals(account.getUsername()))
@@ -49,7 +49,7 @@ public class PersistenceInMemoryRepository implements PersistenceInterface {
 
     @Override
     public synchronized void delete(Account account) {
-        assertNotNull(account);
+        assertArgumentNotNull(account);
 
         if (account.getId().isPresent() && storage.containsKey(account.getId().get())) {
             storage.remove(account.getId().get());
@@ -79,7 +79,7 @@ public class PersistenceInMemoryRepository implements PersistenceInterface {
         return storage.size();
     }
 
-    private static void assertNotNull(Object obj) {
+    private static void assertArgumentNotNull(Object obj) {
         if (Objects.isNull(obj))
             throw new IllegalArgumentException("argument cannot be null");
     }

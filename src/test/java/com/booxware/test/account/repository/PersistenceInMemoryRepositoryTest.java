@@ -17,7 +17,7 @@ public class PersistenceInMemoryRepositoryTest {
     }
 
     @Test
-    public void shouldIncrementLastId() throws Exception {
+    public void shouldGenerateUniqueId() throws Exception {
         repository.save(new Account("user1", "111".getBytes(), "email1"));
         assertThat(repository.getLastId().get()).isEqualTo(1);
         assertThat(repository.getLastId().get()).isEqualTo(1);
@@ -33,31 +33,32 @@ public class PersistenceInMemoryRepositoryTest {
 
     @Test
     public void shouldAddNewIfAccountIdEmpty() throws Exception {
-        Account a1 = new Account("user1", "111".getBytes(), "email1");
-        assertThat(a1.getId().isPresent()).isFalse();
-        a1 = repository.save(a1);
-        assertThat(a1.getId().isPresent()).isTrue();
+        Account account1 = new Account("user1", "111".getBytes(), "email1");
+        assertThat(account1.getId().isPresent()).isFalse();
+        account1 = repository.save(account1);
+        assertThat(account1.getId().isPresent()).isTrue();
         assertThat(repository.countAll()).isEqualTo(1);
 
-        Account a2 = new Account("user2", "111".getBytes(), "email2");
-        assertThat(a2.getId().isPresent()).isFalse();
-        a2 = repository.save(a2);
-        assertThat(a2.getId().isPresent()).isTrue();
+        Account account2 = new Account("user2", "111".getBytes(), "email2");
+        assertThat(account2.getId().isPresent()).isFalse();
+        account2 = repository.save(account2);
+        assertThat(account2.getId().isPresent()).isTrue();
         assertThat(repository.countAll()).isEqualTo(2);
     }
 
+
     @Test
     public void shouldUpdateExistedAccountIfIdNotEmpty() throws Exception {
-        Account a1 = new Account("user1", "111".getBytes(), "email1");
-        assertThat(a1.getId().isPresent()).isFalse();
-        a1 = repository.save(a1);
-        assertThat(a1.getId().isPresent()).isTrue();
+        Account accountWithoutId = new Account("user1", "111".getBytes(), "email1");
+        assertThat(accountWithoutId.getId().isPresent()).isFalse();
+        accountWithoutId = repository.save(accountWithoutId);
+        assertThat(accountWithoutId.getId().isPresent()).isTrue();
         assertThat(repository.countAll()).isEqualTo(1);
 
-        Account a2 = new Account(1L, "user", "222".getBytes(), "salt", "email1", new Date());
-        assertThat(a2.getId().isPresent()).isTrue();
-        a2 = repository.save(a2);
-        assertThat(a2.getId().isPresent()).isTrue();
+        Account accountWithId = new Account(1L, "user", "222".getBytes(), "salt", "email1", new Date());
+        assertThat(accountWithId.getId().isPresent()).isTrue();
+        accountWithId = repository.save(accountWithId);
+        assertThat(accountWithId.getId().isPresent()).isTrue();
         assertThat(repository.countAll()).isEqualTo(1);
     }
 
